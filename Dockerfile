@@ -70,8 +70,8 @@ RUN useradd jenkins -m -s /bin/bash \
   && echo 'jenkins:jenkins' | chpasswd
 
 # Add public key for Jenkins login ,this is only required if you are trying to connect to docker slave using ssh key, Copy the id_rsa.pub as authorized_keys and place it in the files directory before building the image
-RUN mkdir /home/jenkins/.ssh
-COPY /files/authorized_keys /home/jenkins/.ssh/authorized_keys
+RUN mkdir /home/jenkins/.ssh && \
+    touch /home/jenkins/.ssh/authorized_keys #copy the id_rsa.pub contents to this file from the jenkins master in order to enable logging in using ssh private key.
 RUN chown -R jenkins /home/jenkins
 RUN chgrp -R jenkins /home/jenkins
 RUN chmod 600 /home/jenkins/.ssh/authorized_keys
