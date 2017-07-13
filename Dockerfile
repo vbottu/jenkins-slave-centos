@@ -4,8 +4,8 @@ MAINTAINER vv2599@gmail.com
 # Install Essentials
 
 RUN yum update -y && \
-         yum clean all
-
+    yum clean all
+         
 # Install Packages
 RUN yum install -y git && \
          yum install -y wget && \
@@ -28,12 +28,11 @@ RUN alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 200000
 RUN alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 200000
 RUN alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 200000
 
-# Set JAVA_HOME
+# Set JAVA_HOME in path
 
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # Cleanup
-
 RUN rm jdk-${JAVA_VERSION}-linux-x64.rpm
 RUN unset JAVA_VERSION
 RUN yum clean all
@@ -70,7 +69,7 @@ RUN useradd jenkins -m -s /bin/bash \
   && echo 'jenkins ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers \
   && echo 'jenkins:jenkins' | chpasswd
 
-# Add public key for Jenkins login
+# Add public key for Jenkins login ,this is only required if you are trying to connect to docker slave using ssh key, Copy the id_rsa.pub as authorized_keys and place it in the files directory before building the image
 RUN mkdir /home/jenkins/.ssh
 COPY /files/authorized_keys /home/jenkins/.ssh/authorized_keys
 RUN chown -R jenkins /home/jenkins
