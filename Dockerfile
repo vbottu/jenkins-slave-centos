@@ -14,47 +14,38 @@ RUN yum install -y git && \
          yum clean all
 # Java 
 
-ENV JAVA_VERSION 8u131
-ENV JAVA_BUILD 11
-ENV JAVA_HOME=/usr/java/latest
+ENV JAVA_VERSION 8u131 && \
+    JAVA_BUILD 11 && \
+    JAVA_HOME=/usr/java/latest && \
+    PATH $PATH:$JAVA_HOME/bin
 
 
 # Installation
 
 
-RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}-b${JAVA_BUILD}/d54c1d3a095b4ff2b6607d096fa80163/jdk-${JAVA_VERSION}-linux-x64.rpm
-RUN yum localinstall -y jdk-${JAVA_VERSION}-linux-x64.rpm
-RUN alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 200000
-RUN alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 200000
-RUN alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 200000
-
-# Set JAVA_HOME in path
-
-ENV PATH $PATH:$JAVA_HOME/bin
-
-# Cleanup
-RUN rm -f jdk-${JAVA_VERSION}-linux-x64.rpm
-RUN unset JAVA_VERSION
-
+RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}-b${JAVA_BUILD}/d54c1d3a095b4ff2b6607d096fa80163/jdk-${JAVA_VERSION}-linux-x64.rpm && \
+    yum localinstall -y jdk-${JAVA_VERSION}-linux-x64.rpm && \
+    alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 200000 && \
+    alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 200000 && \
+    alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 200000 && \
+    rm -f jdk-${JAVA_VERSION}-linux-x64.rpm && \
+    unset JAVA_VERSION && \
+    yum clean all
 
 #Maven
-ENV MAVEN_VERSION 3.5.0
-ENV MAVEN_HOME /opt/maven
+
+ENV MAVEN_VERSION 3.5.0 && \
+    MAVEN_HOME /opt/maven && \
+    PATH $MAVEN_HOME/bin:$PATH
 #Maven Installation
 
-RUN cd ~
-RUN wget http://www-us.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
+RUN cd ~ && \
+    wget http://www-us.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
     tar -zxf apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
-    mv apache-maven-${MAVEN_VERSION} /opt/maven 
+    mv apache-maven-${MAVEN_VERSION} /opt/maven && \
+    rm -f apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
+    yum clean all
 
-#Set MAVEN_HOME in path
-
-ENV PATH $MAVEN_HOME/bin:$PATH
-
-#Cleanup
-
-RUN rm -f apache-maven-${MAVEN_VERSION}-bin.tar.gz 
-    
 
 # generate dummy keys, centos doesn't autogenerate them like ubuntu does
 
@@ -72,11 +63,11 @@ RUN useradd jenkins -m -s /bin/bash \
 
 # Add public key for Jenkins login ,this is only required if you are trying to connect to docker slave using ssh key, Copy the id_rsa.pub as authorized_keys and place it in the files directory before building the image
 RUN mkdir /home/jenkins/.ssh && \
-    touch /home/jenkins/.ssh/authorized_keys #copy the id_rsa.pub contents to this file from the jenkins master in order to enable logging in using ssh private key.
-RUN chown -R jenkins /home/jenkins
-RUN chgrp -R jenkins /home/jenkins
-RUN chmod 600 /home/jenkins/.ssh/authorized_keys
-RUN chmod 700 /home/jenkins/.ssh
+    touch /home/jenkins/.ssh/authorized_keys && \ #copy the id_rsa.pub contents to this file from the jenkins master in order to enable logging in using ssh private key.
+    chown -R jenkins /home/jenkins && \
+    chgrp -R jenkins /home/jenkins && \
+    chmod 600 /home/jenkins/.ssh/authorized_keys && \
+    chmod 700 /home/jenkins/.ssh
 
 
 # Expose SSH port and run SSHD
