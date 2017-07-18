@@ -9,13 +9,16 @@ RUN yum update -y && \
     yum install -y openssh-server && \
     yum install -y sudo && \
     yum clean all
-# Java 
+# Java & Maven Vars
 
 ENV JAVA_VERSION 8u131 
 ENV JAVA_BUILD 11 
 ENV JAVA_HOME=/usr/java/latest 
 ENV PATH $PATH:$JAVA_HOME/bin
 
+ENV MAVEN_VERSION 3.5.0 
+ENV MAVEN_HOME /opt/maven
+ENV PATH $MAVEN_HOME/bin:$PATH
 
 # Installation
 
@@ -29,11 +32,7 @@ RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=acc
     unset JAVA_VERSION && \
     yum clean all
 
-#Maven
 
-ENV MAVEN_VERSION 3.5.0 
-ENV MAVEN_HOME /opt/maven
-ENV PATH $MAVEN_HOME/bin:$PATH
 #Maven Installation
 
 RUN cd ~ && \
