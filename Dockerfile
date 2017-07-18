@@ -4,14 +4,11 @@ MAINTAINER vv2599@gmail.com
 # Install Essentials
 
 RUN yum update -y && \
+    yum install -y git && \
+    yum install -y wget && \
+    yum install -y openssh-server && \
+    yum install -y sudo && \
     yum clean all
-         
-# Install Packages
-RUN yum install -y git && \
-         yum install -y wget && \
-         yum install -y openssh-server && \
-         yum install -y sudo && \
-         yum clean all
 # Java 
 
 ENV JAVA_VERSION 8u131 
