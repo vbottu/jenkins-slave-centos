@@ -35,7 +35,7 @@ ENV PATH $PATH:$JAVA_HOME/bin
 # Cleanup
 RUN rm -f jdk-${JAVA_VERSION}-linux-x64.rpm
 RUN unset JAVA_VERSION
-RUN yum clean all
+
 
 #Maven
 ENV MAVEN_VERSION 3.5.0
@@ -53,8 +53,8 @@ ENV PATH $MAVEN_HOME/bin:$PATH
 
 #Cleanup
 
-RUN rm -f apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
-    yum clean all
+RUN rm -f apache-maven-${MAVEN_VERSION}-bin.tar.gz 
+    
 
 # generate dummy keys, centos doesn't autogenerate them like ubuntu does
 
