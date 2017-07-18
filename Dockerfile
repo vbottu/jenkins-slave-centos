@@ -33,7 +33,7 @@ RUN alternatives --install /usr/bin/jar jar ${JAVA_HOME}/bin/jar 200000
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # Cleanup
-RUN rm jdk-${JAVA_VERSION}-linux-x64.rpm
+RUN rm -f jdk-${JAVA_VERSION}-linux-x64.rpm
 RUN unset JAVA_VERSION
 RUN yum clean all
 
@@ -53,7 +53,8 @@ ENV PATH $MAVEN_HOME/bin:$PATH
 
 #Cleanup
 
-RUN rm apache-maven-${MAVEN_VERSION}-bin.tar.gz
+RUN rm -f apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
+    yum clean all
 
 # generate dummy keys, centos doesn't autogenerate them like ubuntu does
 
@@ -76,7 +77,7 @@ RUN chown -R jenkins /home/jenkins
 RUN chgrp -R jenkins /home/jenkins
 RUN chmod 600 /home/jenkins/.ssh/authorized_keys
 RUN chmod 700 /home/jenkins/.ssh
-RUN yum clean all
+
 
 # Expose SSH port and run SSHD
 EXPOSE 22
