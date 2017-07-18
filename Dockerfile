@@ -76,6 +76,7 @@ RUN chown -R jenkins /home/jenkins
 RUN chgrp -R jenkins /home/jenkins
 RUN chmod 600 /home/jenkins/.ssh/authorized_keys
 RUN chmod 700 /home/jenkins/.ssh
+RUN yum clean all
 
 # Expose SSH port and run SSHD
 EXPOSE 22
