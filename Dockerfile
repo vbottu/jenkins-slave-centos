@@ -10,17 +10,17 @@ RUN yum update -y && \
     yum clean all
     
 # Java & Maven Vars
-ENV JAVA_VERSION 8u131 
+ENV JAVA_VERSION 8u172 
 ENV JAVA_BUILD 11 
 ENV JAVA_HOME=/usr/java/latest 
 ENV PATH $PATH:$JAVA_HOME/bin
 
-ENV MAVEN_VERSION 3.5.0 
+ENV MAVEN_VERSION 3.5.3 
 ENV MAVEN_HOME /opt/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
 
 # JDK Installation
-RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}-b${JAVA_BUILD}/d54c1d3a095b4ff2b6607d096fa80163/jdk-${JAVA_VERSION}-linux-x64.rpm && \
+RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}-b${JAVA_BUILD}/a58eab1ec242421181065cdc37240b08/jdk-${JAVA_VERSION}-linux-x64.rpm && \
     yum localinstall -y jdk-${JAVA_VERSION}-linux-x64.rpm && \
     alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 200000 && \
     alternatives --install /usr/bin/javac javac ${JAVA_HOME}/bin/javac 200000 && \
