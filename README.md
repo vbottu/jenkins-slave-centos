@@ -8,3 +8,4 @@
 <li>From the root directory where Dockerfile resides issue '<b>docker build -t &ltimage-name&gt .</b>'</li>
 <li>The image will be built and it is now ready to be configured with the jenkins master.</li>
 </ul>
+
